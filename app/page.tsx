@@ -89,26 +89,10 @@ const process: ProcessItem[] = [
   },
 ];
 
-type HomeProps = {
-  searchParams?: Promise<{
-    leistung?: string | string[];
-  }>;
-};
-
 const getServiceHref = (title: string) =>
   `/?leistung=${encodeURIComponent(title)}#kontakt`;
 
-export default async function Home({ searchParams }: HomeProps) {
-  const params = await searchParams;
-  const requestedService = Array.isArray(params?.leistung)
-    ? (params?.leistung[0] ?? "")
-    : params?.leistung;
-  const selectedService: string = services.some(
-    (service) => service.title === requestedService,
-  )
-    ? (requestedService ?? "")
-    : "";
-
+export default function Home() {
   return (
     <main>
       <ScrollRestoration />
@@ -296,10 +280,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
         </div>
 
-        <ContactForm
-          selectedService={selectedService}
-          services={services.map((service) => service.title)}
-        />
+        <ContactForm services={services.map((service) => service.title)} />
       </section>
 
       <SiteFooter />

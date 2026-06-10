@@ -1,15 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 
 type ContactFormProps = {
   services: string[];
-  selectedService: string;
 };
 
-export function ContactForm({ services, selectedService }: ContactFormProps) {
+export function ContactForm({ services }: ContactFormProps) {
   const [isAccepted, setIsAccepted] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
+
+  useEffect(() => {
+    const requestedService = new URLSearchParams(window.location.search).get(
+      "leistung",
+    );
+
+    if (requestedService && services.includes(requestedService)) {
+      setSelectedService(requestedService);
+    }
+  }, [services]);
 
   return (
     <form
@@ -75,7 +85,11 @@ export function ContactForm({ services, selectedService }: ContactFormProps) {
           </label>
           <label>
             Gewünschte Leistung
-            <select name="leistung" defaultValue={selectedService}>
+            <select
+              name="leistung"
+              value={selectedService}
+              onChange={(event) => setSelectedService(event.target.value)}
+            >
               <option value="" disabled>
                 Bitte auswählen
               </option>
