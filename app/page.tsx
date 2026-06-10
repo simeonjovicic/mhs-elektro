@@ -3,6 +3,7 @@ import {
   Bolt,
   Building2,
   CalendarClock,
+  Check,
   CheckCircle2,
   ClipboardCheck,
   Gauge,
@@ -11,16 +12,20 @@ import {
   PanelTop,
   Phone,
   ShieldCheck,
+  Sparkles,
   Wrench,
   Zap,
 } from "lucide-react";
 import Image from "next/image";
 import teamImage from "../team.jpg";
 import { ContactForm } from "./components/contact-form";
-import { SiteHeader } from "./components/site-header";
+import { MobileCallCta } from "./components/mobile-call-cta";
 import { ProcessSteps, type ProcessItem } from "./components/process-steps";
 import { ProjectGallery } from "./components/project-gallery";
 import { ScrollRestoration } from "./components/scroll-restoration";
+import { ScrollReveal } from "./components/scroll-reveal";
+import { SiteFooter } from "./components/site-footer";
+import { SiteHeader } from "./components/site-header";
 import { TestimonialsCarousel } from "./components/testimonials-carousel";
 
 const services = [
@@ -28,26 +33,31 @@ const services = [
     title: "Diverse Elektroinstallationen",
     text: "Saubere Planung und Umsetzung für Wohnungen, Betriebe, Sanierungen und Erweiterungen.",
     icon: Zap,
+    points: ["Neubau & Sanierung", "Wohnung & Gewerbe"],
   },
   {
     title: "Blitzschutz",
     text: "Schutzkonzepte und Montage für Gebäude, Anlagen und sicherheitsrelevante Bereiche.",
     icon: ShieldCheck,
+    points: ["Schutzkonzept", "Montage & Prüfung"],
   },
   {
     title: "Schaltschränke",
     text: "Aufbau, Erweiterung und strukturierte Verdrahtung von Schalt- und Verteileranlagen.",
     icon: PanelTop,
+    points: ["Aufbau & Erweiterung", "Saubere Verdrahtung"],
   },
   {
     title: "Montage von Zählerkästen",
     text: "Fachgerechte Montage, Tausch und Vorbereitung für Netzbetreiber und Abnahme.",
     icon: Gauge,
+    points: ["Montage & Tausch", "Abnahme-Vorbereitung"],
   },
   {
     title: "E-Befunde",
     text: "Prüfung und Dokumentation elektrischer Anlagen für Betrieb, Vermietung und Sicherheit.",
     icon: ClipboardCheck,
+    points: ["Prüfung & Doku", "Für Vermietung & Betrieb"],
   },
 ];
 
@@ -102,7 +112,9 @@ export default async function Home({ searchParams }: HomeProps) {
   return (
     <main>
       <ScrollRestoration />
+      <ScrollReveal />
       <SiteHeader />
+      <MobileCallCta />
 
       <section id="top" className="hero">
         <div className="hero-copy">
@@ -115,7 +127,7 @@ export default async function Home({ searchParams }: HomeProps) {
             Elektroinstallationen, Blitzschutz, Schaltschränke und E-Befunde
             sauber geplant und verlässlich umgesetzt.
           </p>
-          <div className="hero-actions">
+          <div className="hero-actions hero-actions-desktop">
             <a className="button primary" href="#kontakt">
               Anfrage senden
               <ArrowRight size={18} aria-hidden="true" />
@@ -140,6 +152,20 @@ export default async function Home({ searchParams }: HomeProps) {
             </div>
           </div>
         </div>
+        <div className="hero-actions hero-actions-mobile">
+          <a className="button primary" href="#kontakt">
+            Anfrage senden
+            <ArrowRight size={18} aria-hidden="true" />
+          </a>
+          <a
+            id="hero-call-button"
+            className="button secondary"
+            href="tel:+43262234773"
+          >
+            <Phone size={18} aria-hidden="true" />
+            Direkt anrufen
+          </a>
+        </div>
       </section>
 
       <section id="leistungen" className="section services-section">
@@ -161,6 +187,14 @@ export default async function Home({ searchParams }: HomeProps) {
                 </div>
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
+                <ul className="service-points">
+                  {service.points.map((point) => (
+                    <li key={point}>
+                      <Check size={13} aria-hidden="true" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
                 <a
                   className="service-link"
                   href={getServiceHref(service.title)}
@@ -171,6 +205,21 @@ export default async function Home({ searchParams }: HomeProps) {
               </article>
             );
           })}
+
+          <article className="service-card service-card-cta">
+            <div className="card-icon">
+              <Sparkles size={24} aria-hidden="true" />
+            </div>
+            <h3>Etwas anderes geplant?</h3>
+            <p>
+              Auch für alle weiteren Elektroarbeiten sind wir der richtige
+              Ansprechpartner. Erzählen Sie uns kurz von Ihrem Projekt.
+            </p>
+            <a className="button primary" href="#kontakt">
+              Kontakt aufnehmen
+              <ArrowRight size={18} aria-hidden="true" />
+            </a>
+          </article>
         </div>
       </section>
 
@@ -253,28 +302,7 @@ export default async function Home({ searchParams }: HomeProps) {
         />
       </section>
 
-      <footer className="footer">
-        <div>
-          <strong>Impressum</strong>
-          <p>
-            Offenlegung gemäß § 24 Österr. Mediengesetz
-            <br />
-            MHS Elektroinstallation GmbH, Hornbachplatz 9, 2721 Bad Fischau-Brunn
-            <br />
-            Rechtsform: Gesellschaft mit beschränkter Haftung
-            <br />
-            Firmenbuchnummer: FN373607y | Umsatzsteuer ID: ATU66924000
-            <br />
-            Zuständige Behörde gem. ECG: Bezirkshauptmannschaft Wiener
-            Neustadt | Kammerzugehörigkeit: WKÖ & WKNÖ
-          </p>
-        </div>
-        <div className="footer-links">
-          <a href="mailto:info@mhs-elektro.at">info@mhs-elektro.at</a>
-          <a href="tel:+43262234773">+43 2622 34773</a>
-          <span>© 2026 MHS Elektroinstallation GmbH</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }
